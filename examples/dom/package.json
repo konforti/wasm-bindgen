@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start": "./run.sh; webpack-dev-server",
     "serve": "webpack-dev-server"
   },
   "devDependencies": {
