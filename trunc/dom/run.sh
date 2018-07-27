@@ -7,6 +7,6 @@ set -ex
 cargo +nightly build --target wasm32-unknown-unknown
 cargo +nightly run --manifest-path ../../crates/cli/Cargo.toml \
   --bin wasm-bindgen -- \
-  ../../target/wasm32-unknown-unknown/debug/closures.wasm --out-dir .
-npm install
-npm run serve
+  ../../target/wasm32-unknown-unknown/debug/dom.wasm --out-dir .
+# npm install
+# npm run serve

@@ -38,48 +38,48 @@ extern {
 
     #[wasm_bindgen(js_namespace = console)]
     fn log(s: String);
-    // #[wasm_bindgen(js_namespace = toString)]
-    // fn toString(this: &Element);
-    // #[wasm_bindgen(js_namespace = offsetHeight)]
-    // fn offsetHeight(this: &Element);
-    fn getComputedStyle(el: Element) -> CSSStyleDeclaration;
-
+    fn getComputedStyle(el: &Element) -> CSSStyleDeclaration;
+    
     type CSSStyleDeclaration;
     #[wasm_bindgen(method, js_name = getPropertyValue)]
     fn getPropertyValue(this: &CSSStyleDeclaration, prop: &str) -> String;
 
 }
 
-// Called by our JS entry point to run the example
 #[wasm_bindgen]
 pub fn run() {
     
     let el = document.getElementById("dom");
-    
-    // el.set_inner_html("Hello from Rust!");
-    let text = el.get_inner_html();
+    let text = String::from(el.get_inner_html());
+    let el_height = || el.offsetHeight();
+    let style = getComputedStyle(&el);
+    let line_height = || style.getPropertyValue("line-height");
+    let font_size = || style.getPropertyValue("font-size").replace("px", "");
+    let text_height = || if line_height() == "normal" {font_size()} else {line_height()};
+    let len_buffer = 5.0;
+    let mut new_text_len;
+    let mut new_text = text.clone();
+    let text_height_int = || text_height().parse:: <f32>().unwrap();
+    let el_height_int = || el_height().parse:: <f32>().unwrap();
 
-    let el_height = el.offsetHeight();
-    // let el_height_int = el_height.parse:: <f32>().unwrap();
+    loop {
+        new_text_len = new_text.len() / 2;
+        new_text = new_text[..new_text_len].to_string();
+        el.set_inner_html(&new_text);
+        if text_height_int() >= el_height_int() - len_buffer { break };
+    }
 
-    let style = getComputedStyle(el);
-    // log(s);
+    loop {
+        new_text_len += 1;
+        new_text = text[..new_text_len].to_string();
+        el.set_inner_html(&new_text);
+        log(new_text.to_string());
+        if text_height_int() <= el_height_int() - len_buffer { break };
+    }
 
-    let line_height = style.getPropertyValue("line-height");
-    // let line_height_int = line_height.parse:: <f32>().unwrap();
-    let font_size = style.getPropertyValue("font-size").replace("px", "");
-    let font_size_int = font_size.parse:: <f32>().unwrap() * 1.2;
-    let text_height = if line_height == "normal" {font_size} else {line_height};
-
-    // log(text);
-    // log(el_height);
-    let new_text_len = text.len() / 2;
-    let new_text = &text[..new_text_len];
-    let text_height_int = text_height.parse:: <f32>().unwrap();
-    let el_height_int = el_height.parse:: <f32>().unwrap();
-
-    el.set_inner_html(new_text);
-    log(new_text.to_string());
+    new_text_len -= 1;
+    new_text = text[..new_text_len].to_string();
+    el.set_inner_html(&new_text);
 
     // log(line_h   eight);
     // let j = serde_json::to_string(&elem);

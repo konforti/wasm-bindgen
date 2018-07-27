@@ -40,20 +40,7 @@ members = [
   "crates/cli",
   "crates/typescript",
   "crates/webidl",
-  "examples/hello_world",
-  "examples/smorgasboard",
-  "examples/console_log",
-  "examples/dom",
-  "examples/math",
-  "examples/performance",
-  "examples/wasm-in-wasm",
-  "examples/closures",
-  "examples/no_modules",
-  "examples/add",
-  "examples/asm.js",
-  "examples/char",
-  "examples/import_js",
-  "examples/comments"
+  "trunc/dom",
 ]
 
 [profile.release]
